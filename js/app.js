@@ -11,7 +11,7 @@ const secondCallTimer = document.querySelector('#secondCallNotification #call-ti
 const profileDropDown = document.getElementById("myDropdown");
 const profileOnline = document.querySelector(".dropbtn #availability");
 
-let service_app_token = ''; // Add the service app account token here
+let service_app_token = 'YTM4ODhmZTAtMzJhMi00NDk5LWE4ZDctZDE5OTIwNjU0MTgyNzdkYzJjNTMtZGUy_P0A1_cbbe27d4-1f60-43cb-819b-fd3749c66621'; // Add the service app account token here
 // const refresh_token = '';
 
 class callNotificationElement {
@@ -131,8 +131,8 @@ async function getJweToken() {
   myHeaders.append("Authorization", `Bearer ${service_app_token}`);
 
   const payload =  JSON.stringify({
-    "calledNumber": "", // Place your call queue/hunt group/destination number here
-    "guestName": "" // Any guest name can be given
+    "calledNumber": "6100", // Place your call queue/hunt group/destination number here
+    "guestName": "polders" // Any guest name can be given
   });
 
   const request = {
