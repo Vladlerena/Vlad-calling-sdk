@@ -240,8 +240,19 @@ function toggleMute() {
 async function getWebexConfig(userType) {
     return {
         fedramp: false,
-        logger: { level: 'error' },
-        meetings: { reconnection: { enabled: true } }
+        // Ajustamos la estructura del logger para que no de error 'undefined'
+        logger: {
+            level: 'error',
+            history: {
+                level: 'error'
+            }
+        },
+        meetings: { 
+            reconnection: { enabled: true } 
+        },
+        credentials: {
+            access_token: sessionStorage.getItem('webex_token')
+        }
     };
 }
 
