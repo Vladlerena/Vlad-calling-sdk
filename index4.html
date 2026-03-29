@@ -26,43 +26,34 @@ async function handleAction() {
     const status = document.getElementById('status');
 
     try {
-        status.innerText = "Inicializando SDK...";
+        status.innerText = "Cargando configuración del Fork...";
 
+        // INICIALIZACIÓN MÍNIMA (La que usa el ejemplo oficial)
         webex = Webex.init({
-            credentials: { access_token: token },
-            config: {
-                // Eliminamos 'preDiscovery: true' que causaba el error de string
-                services: {
-                    discovery: {
-                        allowedDomains: ['https://vladlerena.github.io'] 
-                    }
-                },
-                phone: {
-                    enablePhoneService: true,
-                    enableWebRTC: true,
-                    calling: { 
-                        enabled: true 
-                    }
-                }
+            credentials: {
+                access_token: token
             }
+            // NO agregamos el bloque 'config' complejo que da el error de defaultUrl
         });
 
+        // Configuración manual post-init (más segura)
+        webex.config.phone.enablePhoneService = true;
+        webex.config.phone.enableWebRTC = true;
+
         status.innerText = "Registrando dispositivo...";
-        // Importante: No llamamos a device.register() inmediatamente. 
-        // Dejamos que el SDK lo maneje internamente al intentar registrar el phone.
-        
+        // En lugar de llamar a internal.device, usamos el registro de phone directo
         await webex.phone.register();
 
         status.innerText = "Marcando al 6100...";
         activeCall = await webex.phone.dial('6100');
 
         activeCall.on('connected', () => {
-            status.innerText = "🟢 EN LLAMADA AL 6100";
+            status.innerText = "🟢 CONECTADO AL 6100";
             document.getElementById('btnCall').innerText = "COLGAR";
         });
 
     } catch (error) {
-        console.error("Error capturado:", error);
+        console.error("Detalle del error:", error);
         status.innerText = "Error: " + error.message;
     }
 }
