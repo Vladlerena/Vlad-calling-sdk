@@ -145,20 +145,22 @@
 			document.getElementById('active-call-timer').style.display = 'none';
 		});
 	</script>
-<div style="display: none !important; visibility: hidden; opacity: 0; width: 0; height: 0; overflow: hidden;">
-    <a id="flights-link" href="#">Flights</a>
-    <a id="hotels-link" href="#">Hotels</a>
-    <a id="holiday-link" href="#">Holidays</a>
-    <a id="cabs-link" href="#">Cabs</a>
-    <a id="home-link" href="#">Home</a>
-    <a id="my-trips-link" href="#">My Trips</a>
-    
-    <div id="bs-example-navbar-collapse-1"></div>
+<div style="display: none !important; visibility: hidden; opacity: 0;">
+    <nav class="navbar-default">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a id="home-link" href="index.html">Home</a></li>
+                <li><a id="my-trips-link" href="mytrips.html">My Trips</a></li>
+                <li><a id="flights-link" href="flights.html">Flights</a></li>
+                <li><a id="hotels-link" href="hotels.html">Hotels</a></li>
+                <li><a id="holiday-link">Holidays</a></li>
+                <li><a id="cabs-link">Cabs</a></li>
+            </ul>
+        </div>
+    </nav>
     <div id="myDropdown"></div>
-    <button class="navbar-toggle"></button>
     <button class="dropbtn"></button>
     <span class="avatar-name"></span>
-    <img class="avatar">
 </div>
 
 <link rel="icon" href="data:,">
