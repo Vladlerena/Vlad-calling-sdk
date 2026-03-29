@@ -1,149 +1,114 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Claro Chile - Acceso Corporativo</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <title>Claro Chile - Acceso Corporativo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="application/x-javascript"> 
+        addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); 
+        function hideURLbar(){ window.scrollTo(0,1); } 
+    </script>
 
-<link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
-<link rel="stylesheet" href="css/style.css" type="text/css" media="all" />
-<link href="css/font-awesome.css" rel="stylesheet"> 
-<link href='//fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+    <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+    <link rel="stylesheet" href="css/style.css" type="text/css" media="all" />
+    <link href="css/font-awesome.css" rel="stylesheet"> 
+    <link href='//fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
 
-<style>
-	/* Sobreescritura para Look & Feel Claro Dark */
-	body { background: #121212; color: #fff; font-family: 'Oswald', sans-serif; }
-	.banner { background: #1e1e1e; padding-bottom: 20px; border-bottom: 3px solid #ef3829; }
-	.top-banner { background: #000; border-bottom: 1px solid #333; }
-	.header { background: transparent; padding: 2em 0; }
-	
-	.logo h1 a { color: #fff !important; text-transform: uppercase; font-weight: 700; }
-	.logo h1 a span { color: #ef3829; } /* Punto o detalle en rojo */
+    <style>
+        /* Tu diseño Claro Dark impecable */
+        body { background: #121212; color: #fff; font-family: 'Oswald', sans-serif; }
+        .banner { background: #1e1e1e; padding-bottom: 20px; border-bottom: 3px solid #ef3829; }
+        .top-banner { background: #000; border-bottom: 1px solid #333; }
+        .header { background: transparent; padding: 2em 0; }
+        .logo h1 a { color: #fff !important; text-transform: uppercase; font-weight: 700; }
+        .logo h1 a span { color: #ef3829; }
 
-	.claro-container {
-		max-width: 500px;
-		margin: 80px auto;
-		background: #1e1e1e;
-		padding: 40px;
-		border-radius: 15px;
-		text-align: center;
-		box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-	}
+        .claro-container {
+            max-width: 500px;
+            margin: 80px auto;
+            background: #1e1e1e;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
 
-	.claro-red-btn {
-		background: #ef3829;
-		color: #fff;
-		padding: 15px 30px;
-		border-radius: 8px;
-		text-transform: uppercase;
-		font-weight: bold;
-		display: inline-block;
-		margin-top: 20px;
-		border: none;
-		transition: 0.3s;
-		width: 100%;
-		font-size: 1.2em;
-	}
-	.claro-red-btn:hover { background: #d63022; color: #fff; transform: translateY(-2px); }
-	
-	.claro-outline-btn {
-		background: transparent;
-		color: #fff;
-		border: 2px solid #444;
-		padding: 15px 30px;
-		border-radius: 8px;
-		display: inline-block;
-		margin-top: 15px;
-		width: 100%;
-		transition: 0.3s;
-	}
-	.claro-outline-btn:hover { border-color: #ef3829; color: #ef3829; }
+        .claro-red-btn {
+            background: #ef3829; color: #fff; padding: 15px 30px; border-radius: 8px;
+            text-transform: uppercase; font-weight: bold; display: inline-block;
+            margin-top: 20px; border: none; transition: 0.3s; width: 100%; font-size: 1.2em;
+            text-decoration: none;
+        }
+        .claro-red-btn:hover { background: #d63022; color: #fff; transform: translateY(-2px); text-decoration: none; }
+        
+        .claro-outline-btn {
+            background: transparent; color: #fff; border: 2px solid #444; padding: 15px 30px;
+            border-radius: 8px; display: inline-block; margin-top: 15px; width: 100%; transition: 0.3s;
+            text-decoration: none;
+        }
+        .claro-outline-btn:hover { border-color: #ef3829; color: #ef3829; text-decoration: none; }
 
-	/* Ocultar elementos de viajes originales */
-	#kb, .about { display: none; }
-
-	.avatar-info { margin-bottom: 20px; padding: 15px; background: #2a2a2a; border-radius: 10px; }
-</style>
+        #kb, .about { display: none; }
+        .avatar-info { margin-bottom: 20px; padding: 15px; background: #2a2a2a; border-radius: 10px; }
+    </style>
 </head>
 <body>
-	<div class="banner">
-		<div class="top-banner">
-			<div class="container">
-				<div class="top-banner-left">
-					<ul>
-						<li><a href="#"><i class="fa fa-phone"></i> Soporte Claro</a></li>
-					</ul>
-				</div>
-				<div class="clearfix"> </div>
-			</div>
-		</div>
-		
-		<div class="header">
-			<div class="container">
-				<div class="logo">
-					<h1><a href="index.html">CLARO <span>CHILE</span></a></h1>
-				</div>
-				<div class="clearfix"> </div>
-			</div>
-		</div>
-	</div>
+    <div class="banner">
+        <div class="top-banner">
+            <div class="container">
+                <div class="top-banner-left">
+                    <ul>
+                        <li><a href="#"><i class="fa fa-phone"></i> Soporte Claro</a></li>
+                    </ul>
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+        </div>
+        
+        <div class="header">
+            <div class="container">
+                <div class="logo">
+                    <h1><a href="index.html">CLARO <span>CHILE</span></a></h1>
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+        </div>
+    </div>
 
-	<div class="container">
-		<div class="claro-container">
-			<h2 style="margin-bottom: 10px;">Portal C2C</h2>
-			<p style="color: #888; margin-bottom: 30px;">Inicia sesión para habilitar Customer Assist</p>
+    <div class="container">
+        <div class="claro-container">
+            <h2 style="margin-bottom: 10px;">Portal C2C</h2>
+            <p id="status-text" style="color: #888; margin-bottom: 30px;">Inicia sesión para habilitar Customer Assist</p>
 
-			<div id="user-info" class="top-banner-right" style="float: none; display:none; margin-bottom: 20px;">
-				<div class="avatar-info">
-					<img src="images/harvey_avatar.jpeg" alt="Avatar" class="avatar" style="width: 50px; border-radius: 50%;">
-					<span class="avatar-name" id="user-name" style="display: block; margin-top: 10px; font-size: 1.2em;">Cargando...</span>
-				</div>
-			</div>
+            <div id="user-info" style="display:none; margin-bottom: 20px;">
+                <div class="avatar-info">
+                    <img src="images/harvey_avatar.jpeg" alt="Avatar" style="width: 50px; border-radius: 50%;">
+                    <span id="user-name" style="display: block; margin-top: 10px; font-size: 1.2em;"></span>
+                </div>
+            </div>
 
-			<a id="login-button" class="claro-red-btn">INICIAR SESIÓN WEBEX</a>
+            <a id="login-button" class="claro-red-btn">INICIAR SESIÓN WEBEX</a>
 
-			<a id="my-trips-button" href="mytrips.html" class="claro-outline-btn" style="display:none;">CUSTOMER ASSIST</a>
+            <a id="my-trips-button" href="mytrips.html" class="claro-outline-btn" style="display:none;">
+                <i class="fa fa-headset"></i> CUSTOMER ASSIST
+            </a>
 
-			<a id="logout-button" class="claro-outline-btn" style="display:none; border-color: #666; color: #666;">Cerrar Sesión</a>
-		</div>
-	</div>
+            <a id="logout-button" href="#" class="claro-outline-btn" style="display:none; border-color: #666; color: #666;">
+                Cerrar Sesión
+            </a>
+        </div>
+    </div>
 
-	<script src="js/jquery-1.11.1.min.js"></script>
-	<script src="js/bootstrap.js"></script>
-	<script src="js/SmoothScroll.min.js"></script>
-	<script src="https://unpkg.com/webex/umd/webex.min.js"></script>
-	<script src='https://unpkg.com/webex@3.5.0-next.25/umd/calling.min.js'></script>
-	<script type="text/javascript" src="./js/timer.js"></script>
-	<script type="text/javascript" src="./js/app.js"></script>
-	<script type="text/javascript" src="./sdk/calling-sdk.js"></script>
-
-	<script>
-		// Forzamos el cambio de texto de los botones si app.js los sobreescribe
-		window.addEventListener('load', function() {
-			const tripsBtn = document.getElementById('my-trips-button');
-			if(tripsBtn) tripsBtn.innerHTML = '<i class="fa fa-headset"></i> CUSTOMER ASSIST';
-		});
-	</script>
-<div style="display: none !important;">
-    <div id="myDropdown" class="dropdown-content"></div>
+    <script src="js/jquery-1.11.1.min.js"></script>
+    <script src="js/bootstrap.js"></script>
     
-    <div class="tooltip-calling"></div>
-    <div class="tooltip-trigger" data-tooltip="test"></div>
+    <script src="https://unpkg.com/webex/umd/webex.min.js"></script>
+    <script src='https://unpkg.com/webex@3.5.0-next.25/umd/calling.min.js'></script>
     
-    <a id="flights-link"></a>
-    <a id="hotels-link"></a>
-    <a id="holiday-link"></a>
-    <a id="cabs-link"></a>
-</div>
+    <script type="text/javascript" src="./sdk/calling-sdk.js"></script>
+    
+    <script type="text/javascript" src="./js/claro-logic.js"></script>
 
-<script>
-    // Parche de emergencia: Si 'profileDropDown' no existe, lo creamos como objeto vacío
-    // para que window.onclick no falle.
-    if (typeof profileDropDown === 'undefined') {
-        var profileDropDown = document.getElementById('myDropdown') || { classList: { remove: function(){} } };
-    }
-</script>
 </body>	
 </html>
