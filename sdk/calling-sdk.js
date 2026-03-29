@@ -234,7 +234,9 @@ function toggleMute() {
     incomingCall.mute(localAudioStream);
     callNotification.muteToggle();
 }
-// --- 1. FUNCIONES DE CONFIGURACIÓN (FUERA DEL OBJETO) ---
+// --- FIN DE FUNCIONES ORIGINALES ---
+
+// 1. CONFIGURACIONES (Aisladas y Globales)
 async function getWebexConfig(userType) {
     return {
         fedramp: false,
@@ -251,22 +253,22 @@ async function getCallingConfig() {
     };
 }
 
-// --- 2. FUNCIONES DE INTERFAZ VACÍAS (PARA QUE NO EXPLOTE EL SDK) ---
-function updateAvailability() { console.log("Estado de línea actualizado"); }
-function openCallNotification(obj) { console.log("Llamada entrante detectada"); }
-function openCallWindow(num) { console.log("Iniciando ventana de llamada para:", num); }
-function updateCallerId(id) { console.log("Caller ID:", id); }
-function closeCallWindow() { console.log("Cerrando ventana de llamada"); }
-function fetchCallerBooking() { console.log("Consultando datos del cliente..."); }
-function renderCallHistory(data) { console.log("Historial cargado"); }
+// 2. FUNCIONES DE INTERFAZ (Para que el motor no se detenga)
+function updateAvailability() { console.log("Estado de línea: OK"); }
+function openCallNotification(obj) { console.log("Llamada detectada"); }
+function openCallWindow(num) { console.log("Llamando a:", num); }
+function updateCallerId(id) { console.log("ID:", id); }
+function closeCallWindow() { console.log("Cierre de ventana"); }
+function fetchCallerBooking() { }
+function renderCallHistory(data) { }
 
-// --- 3. EL PUENTE DE COMPATIBILIDAD PARA CLARO ---
+// 3. EL OBJETO QUE CLARO NECESITA
 window.callingSDK = {
     get isRegistered() {
         return (typeof line !== 'undefined' && line && line.state === 'REGISTERED');
     },
     initialize: async function(token) {
-        console.log("Iniciando motor de voz con token...");
+        console.log("Iniciando motor de voz Claro...");
         sessionStorage.setItem('webex_token', token);
         try {
             await initCalling('customer');
