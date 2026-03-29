@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Claro C2C - Custom</title>
+    <script src="webex.min.js"></script>
+    <script src="sdk/calling-sdk.js"></script> <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #f4f7f9; }
+        .card { background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; width: 350px; }
+        #status { margin: 20px 0; color: #666; font-size: 14px; }
+        .btn-call { width: 100%; padding: 15px; background: #007aa5; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 18px; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Anexo 6100</h2>
+    <div id="status">Verificando conexión con el SDK...</div>
+    <button id="btnCall" onclick="hacerLlamada()" class="btn-call" disabled>LLAMAR AL 6100</button>
+</div>
+
+<script>
+    // Usamos la lógica del Fork
+    window.onload = async () => {
+        const status = document.getElementById('status');
+        const btn = document.getElementById('btnCall');
+
+        try {
+            // Intentamos recuperar el token que el Fork ya validó
+            const token = sessionStorage.getItem('webex_token') || prompt("Pega el Access Token aquí:");
+            
+            // Inicializamos usando el CallingSDK del Fork, no el Webex puro
+            // Esto es lo que evita el error 403 del catálogo
+            await callingSDK.initialize(token); 
+            
+            status.innerText = "✅ Conectado y Autorizado";
+            btn.disabled = false;
+        } catch (e) {
+            status.innerText = "❌ Error de inicialización: " + e.message;
+        }
+    };
+
+    async function hacerLlamada() {
+        try {
+            // Usamos la función del SDK del Fork
+            await callingSDK.makeCall('6100');
+        } catch (e) {
+            alert("Error al llamar: " + e.message);
+        }
+    }
+</script>
+</body>
+</html>
