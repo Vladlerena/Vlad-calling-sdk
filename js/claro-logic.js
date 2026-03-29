@@ -1,7 +1,7 @@
 // js/claro-logic.js
 
 // 1. PEGA AQUÍ TU ACCESS TOKEN DE LA SERVICE APP
-const SERVICE_APP_TOKEN = 'TU_ACCESS_TOKEN_AQUI'; 
+const SERVICE_APP_TOKEN = 'NTQ5NTY5MjctZGU2NC00MTU1LThkNjktZjAzNjBhNjdhNzgwMmRhOTYyYzUtZTZh_P0A1_cbbe27d4-1f60-43cb-819b-fd3749c66621'; 
 
 document.addEventListener('DOMContentLoaded', async () => {
     const statusText = document.getElementById('registration-status-text');
