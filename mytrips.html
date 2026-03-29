@@ -1,194 +1,149 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Claro Chile - Customer Assist</title>
-    
-    <script src="webex.min.js"></script>
-    
-    <style>
-        :root {
-            --claro-red: #ef3829;
-            --claro-dark: #212529;
-            --claro-gray: #f8f9fa;
-        }
+<title>Claro Chile - Customer Assist</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 
-        body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--claro-gray);
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+<link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+<link rel="stylesheet" href="css/style.css" type="text/css" media="all" />
+<link href="css/font-awesome.css" rel="stylesheet"> 
+<link href='//fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
 
-        .container {
-            background: white;
-            width: 100%;
-            max-width: 400px;
-            padding: 40px;
-            border-radius: 24px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            text-align: center;
-            position: relative;
-        }
+<style>
+	/* Estilo Dark Corporativo Claro */
+	body { background: #121212; color: #fff; font-family: 'Oswald', sans-serif; margin:0; }
+	.banner { background: #1e1e1e; border-bottom: 3px solid #ef3829; padding: 1em 0; }
+	
+	.support-container {
+		max-width: 600px;
+		margin: 50px auto;
+		background: #1e1e1e;
+		padding: 40px;
+		border-radius: 20px;
+		box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+		text-align: center;
+		border: 1px solid #333;
+	}
 
-        .logo-claro {
-            width: 120px;
-            margin-bottom: 20px;
-        }
+	.status-panel {
+		background: #252525;
+		padding: 15px;
+		border-radius: 10px;
+		margin-bottom: 30px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 15px;
+	}
 
-        h1 {
-            color: var(--claro-dark);
-            font-size: 24px;
-            margin-bottom: 8px;
-            font-weight: 700;
-        }
+	/* La "Burbuja Verde" de estado */
+	#registration-status-icon {
+		width: 12px; height: 12px; border-radius: 50%; background: #444;
+	}
+	.online-status { background: #28a745 !important; box-shadow: 0 0 10px #28a745; }
 
-        p {
-            color: #6c757d;
-            font-size: 15px;
-            margin-bottom: 30px;
-        }
+	h2 { color: #fff; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+	p.subtitle { color: #888; margin-bottom: 30px; }
 
-        /* Indicador de Estado (Burbuja) */
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 6px 16px;
-            border-radius: 20px;
-            background: #eee;
-            font-size: 12px;
-            font-weight: 600;
-            margin-bottom: 30px;
-            transition: 0.3s;
-        }
+	/* Estilo del Botón de Llamada que hereda del SDK */
+	.call-action-btn {
+		background: #ef3829;
+		color: #fff;
+		border: none;
+		padding: 20px 40px;
+		border-radius: 50px;
+		font-size: 1.5em;
+		font-weight: bold;
+		cursor: pointer;
+		transition: 0.3s;
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 15px;
+	}
+	.call-action-btn:hover { background: #d63022; transform: scale(1.02); }
+	.call-action-btn:disabled { background: #444; cursor: not-allowed; }
 
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #adb5bd;
-            margin-right: 8px;
-        }
+	/* Ocultar secciones de viajes */
+	.mytrips, .footer, .top-banner { display: none; }
 
-        /* Estados de la burbuja */
-        .online .status-dot { background: #28a745; box-shadow: 0 0 8px #28a745; }
-        .online { color: #155724; background: #d4edda; }
-
-        /* Botón de Llamada Moderno */
-        .btn-call {
-            width: 100%;
-            padding: 18px;
-            background-color: var(--claro-red);
-            color: white;
-            border: none;
-            border-radius: 14px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .btn-call:hover:not(:disabled) {
-            background-color: #d63022;
-            box-shadow: 0 8px 20px rgba(239, 56, 41, 0.3);
-            transform: translateY(-2px);
-        }
-
-        .btn-call:active:not(:disabled) {
-            transform: translateY(0);
-        }
-
-        .btn-call:disabled {
-            background-color: #e9ecef;
-            color: #adb5bd;
-            cursor: not-allowed;
-        }
-
-        .btn-hangup {
-            background-color: var(--claro-dark) !important;
-        }
-
-        /* Footer */
-        .footer-text {
-            margin-top: 25px;
-            font-size: 11px;
-            color: #adb5bd;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-    </style>
+	/* Área de controles de llamada (aparece cuando la llamada está activa) */
+	#call-controls-container {
+		margin-top: 20px;
+		padding: 20px;
+		border-top: 1px solid #333;
+	}
+</style>
 </head>
 <body>
+	<div class="banner">
+		<div class="container">
+			<div class="logo">
+				<h1><a href="index.html" style="color:#fff !important;">CLARO <span>ASSIST</span></a></h1>
+			</div>
+			<div class="clearfix"> </div>
+		</div>
+	</div>
 
-    <div class="container">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/Logo_Claro.svg" class="logo-claro" alt="Claro Chile">
-        
-        <h1>Customer Assist</h1>
-        <p>Conectando con soporte técnico...</p>
+	<div class="container">
+		<div class="support-container">
+			<h2>Soporte Técnico</h2>
+			<p class="subtitle">Anexo Directo: 6100</p>
 
-        <div id="status-container" class="status-badge">
-            <span class="status-dot"></span>
-            <span id="status-text">Sincronizando SDK...</span>
-        </div>
+			<div class="status-panel">
+				<div id="registration-status-icon"></div>
+				<span id="registration-status-text">Verificando línea...</span>
+			</div>
 
-        <button id="btnCall" onclick="iniciarLlamada()" class="btn-call" disabled>
-            <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                <path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.568 17.568 0 0 0 4.168 6.608 17.569 17.569 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.678.678 0 0 0-.58-.122l-2.19.547a1.745 1.745 0 0 1-1.657-.459L5.482 8.062a1.745 1.745 0 0 1-.46-1.657l.548-2.19a.678.678 0 0 0-.122-.58L3.654 1.328z"/>
-            </svg>
-            Llamar al 6100
-        </button>
+			<button id="make-call-btn" class="call-action-btn" onclick="callingSDK.makeCall('6100')">
+				<i class="fa fa-phone"></i> LLAMAR AHORA
+			</button>
 
-        <div class="footer-text">vladlerena.github.io</div>
-    </div>
+			<div id="call-controls-section">
+				<div id="active-call-timer" style="font-size: 2em; margin: 20px 0; display:none;">00:00</div>
+				<button id="hangup-btn" class="call-action-btn" style="background:#444; display:none;" onclick="callingSDK.hangup()">
+					<i class="fa fa-phone-slash"></i> FINALIZAR
+				</button>
+			</div>
+		</div>
+	</div>
 
-    <script src="js/app.js"></script>
-    <script src="sdk/calling-sdk.js"></script>
+	<script src="js/jquery-1.11.1.min.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="https://unpkg.com/webex/umd/webex.min.js"></script>
+	<script src='https://unpkg.com/webex@3.5.0-next.25/umd/calling.min.js'></script>
+	
+	<script type="text/javascript" src="./js/timer.js"></script>
+	<script type="text/javascript" src="./js/app.js"></script>
+	<script type="text/javascript" src="./sdk/calling-sdk.js"></script>
 
-    <script>
-        // Mapeamos las funciones del Fork a nuestra nueva interfaz
-        async function iniciarLlamada() {
-            const btn = document.getElementById('btnCall');
-            const statusText = document.getElementById('status-text');
+	<script>
+		// Sincronización visual con el estado del SDK
+		const checkStatus = setInterval(() => {
+			if (typeof callingSDK !== 'undefined' && callingSDK.isRegistered) {
+				document.getElementById('registration-status-icon').classList.add('online-status');
+				document.getElementById('registration-status-text').innerText = "Línea Habilitada";
+				clearInterval(checkStatus);
+			}
+		}, 1000);
 
-            try {
-                if (btn.classList.contains('btn-hangup')) {
-                    statusText.innerText = "Terminando llamada...";
-                    await callingSDK.hangup();
-                } else {
-                    statusText.innerText = "Llamando al 6100...";
-                    await callingSDK.makeCall('6100');
-                    
-                    btn.innerHTML = "Colgar Llamada";
-                    btn.classList.add('btn-hangup');
-                }
-            } catch (error) {
-                console.error(error);
-                statusText.innerText = "Error: " + error.message;
-            }
-        }
+		// Escuchar eventos de llamada para mostrar/ocultar botones de colgar
+		// Esto depende de cómo el calling-sdk.js emita eventos
+		window.addEventListener('call:connected', () => {
+			document.getElementById('make-call-btn').style.display = 'none';
+			document.getElementById('hangup-btn').style.display = 'flex';
+			document.getElementById('active-call-timer').style.display = 'block';
+		});
 
-        // Sistema de monitoreo para la burbuja verde
-        const monitorInterval = setInterval(() => {
-            if (typeof callingSDK !== 'undefined' && callingSDK.isRegistered) {
-                const badge = document.getElementById('status-container');
-                const text = document.getElementById('status-text');
-                const btn = document.getElementById('btnCall');
-
-                badge.classList.add('online');
-                text.innerText = "Agente Online";
-                btn.disabled = false;
-                
-                clearInterval(monitorInterval);
-            }
-        }, 1000);
-    </script>
-</body>
+		window.addEventListener('call:disconnected', () => {
+			document.getElementById('make-call-btn').style.display = 'flex';
+			document.getElementById('hangup-btn').style.display = 'none';
+			document.getElementById('active-call-timer').style.display = 'none';
+		});
+	</script>
+</body>	
 </html>
