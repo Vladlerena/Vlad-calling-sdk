@@ -1,10 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
 <title>Claro Chile - Customer Assist</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<script type="application/x-javascript"> 
+    addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); 
+    function hideURLbar(){ window.scrollTo(0,1); } 
+</script>
 
 <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
 <link rel="stylesheet" href="css/style.css" type="text/css" media="all" />
@@ -39,7 +42,6 @@
 		gap: 15px;
 	}
 
-	/* La "Burbuja Verde" de estado */
 	#registration-status-icon {
 		width: 12px; height: 12px; border-radius: 50%; background: #444;
 	}
@@ -48,35 +50,17 @@
 	h2 { color: #fff; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
 	p.subtitle { color: #888; margin-bottom: 30px; }
 
-	/* Estilo del Botón de Llamada que hereda del SDK */
 	.call-action-btn {
-		background: #ef3829;
-		color: #fff;
-		border: none;
-		padding: 20px 40px;
-		border-radius: 50px;
-		font-size: 1.5em;
-		font-weight: bold;
-		cursor: pointer;
-		transition: 0.3s;
-		width: 100%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		gap: 15px;
+		background: #ef3829; color: #fff; border: none; padding: 20px 40px;
+		border-radius: 50px; font-size: 1.5em; font-weight: bold; cursor: pointer;
+		transition: 0.3s; width: 100%; display: flex; align-items: center;
+		justify-content: center; gap: 15px;
 	}
 	.call-action-btn:hover { background: #d63022; transform: scale(1.02); }
 	.call-action-btn:disabled { background: #444; cursor: not-allowed; }
 
-	/* Ocultar secciones de viajes */
+	/* Ocultamos lo innecesario */
 	.mytrips, .footer, .top-banner { display: none; }
-
-	/* Área de controles de llamada (aparece cuando la llamada está activa) */
-	#call-controls-container {
-		margin-top: 20px;
-		padding: 20px;
-		border-top: 1px solid #333;
-	}
 </style>
 </head>
 <body>
@@ -99,7 +83,7 @@
 				<span id="registration-status-text">Verificando línea...</span>
 			</div>
 
-			<button id="make-call-btn" class="call-action-btn" onclick="callingSDK.makeCall('6100')">
+			<button id="make-call-btn" class="call-action-btn" onclick="handleCall()" disabled>
 				<i class="fa fa-phone"></i> LLAMAR AHORA
 			</button>
 
@@ -118,21 +102,29 @@
 	<script src='https://unpkg.com/webex@3.5.0-next.25/umd/calling.min.js'></script>
 	
 	<script type="text/javascript" src="./js/timer.js"></script>
-	<script type="text/javascript" src="./js/app.js"></script>
 	<script type="text/javascript" src="./sdk/calling-sdk.js"></script>
+	<script type="text/javascript" src="./js/claro-logic.js"></script>
 
 	<script>
-		// Sincronización visual con el estado del SDK
+		/**
+		 * Sincronización visual local:
+		 * Monitoreamos el SDK cada segundo para actualizar la interfaz de Claro
+		 */
 		const checkStatus = setInterval(() => {
 			if (typeof callingSDK !== 'undefined' && callingSDK.isRegistered) {
-				document.getElementById('registration-status-icon').classList.add('online-status');
-				document.getElementById('registration-status-text').innerText = "Línea Habilitada";
+				const icon = document.getElementById('registration-status-icon');
+				const text = document.getElementById('registration-status-text');
+				const btn = document.getElementById('make-call-btn');
+
+				if (icon) icon.classList.add('online-status');
+				if (text) text.innerText = "Línea Habilitada";
+				if (btn) btn.disabled = false;
+				
 				clearInterval(checkStatus);
 			}
 		}, 1000);
 
-		// Escuchar eventos de llamada para mostrar/ocultar botones de colgar
-		// Esto depende de cómo el calling-sdk.js emita eventos
+		// Manejo básico de visibilidad de botones en llamada
 		window.addEventListener('call:connected', () => {
 			document.getElementById('make-call-btn').style.display = 'none';
 			document.getElementById('hangup-btn').style.display = 'flex';
@@ -145,24 +137,5 @@
 			document.getElementById('active-call-timer').style.display = 'none';
 		});
 	</script>
-<div style="display: none !important;">
-    <div id="myDropdown" class="dropdown-content"></div>
-    
-    <div class="tooltip-calling"></div>
-    <div class="tooltip-trigger" data-tooltip="test"></div>
-    
-    <a id="flights-link"></a>
-    <a id="hotels-link"></a>
-    <a id="holiday-link"></a>
-    <a id="cabs-link"></a>
-</div>
-
-<script>
-    // Parche de emergencia: Si 'profileDropDown' no existe, lo creamos como objeto vacío
-    // para que window.onclick no falle.
-    if (typeof profileDropDown === 'undefined') {
-        var profileDropDown = document.getElementById('myDropdown') || { classList: { remove: function(){} } };
-    }
-</script>
 </body>	
 </html>
