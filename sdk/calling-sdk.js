@@ -234,65 +234,53 @@ function toggleMute() {
     incomingCall.mute(localAudioStream);
     callNotification.muteToggle();
 }
-// --- PUENTE DE COMPATIBILIDAD PARA CLARO ---
+// --- 1. FUNCIONES DE CONFIGURACIÓN (FUERA DEL OBJETO) ---
+async function getWebexConfig(userType) {
+    return {
+        fedramp: false,
+        logger: { level: 'error' },
+        meetings: { reconnection: { enabled: true } }
+    };
+}
+
+async function getCallingConfig() {
+    return {
+        isB2B: false,
+        isWebexCalling: true,
+        isUcmCalling: false
+    };
+}
+
+// --- 2. FUNCIONES DE INTERFAZ VACÍAS (PARA QUE NO EXPLOTE EL SDK) ---
+function updateAvailability() { console.log("Estado de línea actualizado"); }
+function openCallNotification(obj) { console.log("Llamada entrante detectada"); }
+function openCallWindow(num) { console.log("Iniciando ventana de llamada para:", num); }
+function updateCallerId(id) { console.log("Caller ID:", id); }
+function closeCallWindow() { console.log("Cerrando ventana de llamada"); }
+function fetchCallerBooking() { console.log("Consultando datos del cliente..."); }
+function renderCallHistory(data) { console.log("Historial cargado"); }
+
+// --- 3. EL PUENTE DE COMPATIBILIDAD PARA CLARO ---
 window.callingSDK = {
     get isRegistered() {
-        return !!line && line.state === 'REGISTERED';
+        return (typeof line !== 'undefined' && line && line.state === 'REGISTERED');
     },
     initialize: async function(token) {
         console.log("Iniciando motor de voz con token...");
-        // Guardamos el token en el lugar donde el SDK de Cisco lo busca
         sessionStorage.setItem('webex_token', token);
-        
-        // Llamamos a la función original del SDK
-        // Usamos 'customer' como tipo por defecto
-        await initCalling('customer'); 
-        
-        return new Promise((resolve) => {
-            const check = setInterval(() => {
-                if (line && line.state === 'REGISTERED') {
-                    clearInterval(check);
-                    resolve(true);
-                }
-            }, 1000);
-        });
+        try {
+            await initCalling('customer');
+            return true;
+        } catch (e) {
+            console.error("Error en initCalling:", e);
+            throw e;
+        }
     },
     makeCall: function(number) {
-        return initiateCall(number);
+        if (typeof initiateCall !== 'undefined') return initiateCall(number);
     },
     hangup: function() {
-        if (call) call.end();
-        if (incomingCall) incomingCall.end();
+        if (typeof call !== 'undefined' && call) call.end();
+        if (typeof incomingCall !== 'undefined' && incomingCall) incomingCall.end();
     }
-    // --- FUNCIONES DE CONFIGURACIÓN PARA CLARO ---
-async function getWebexConfig(userType) {
-    return {
-        fedramp: false,
-        logger: { level: 'error' },
-        meetings: { reconnection: { enabled: true } }
-    };
-}
-
-async function getCallingConfig() {
-    return {
-        isB2B: false,
-        isWebexCalling: true,
-        isUcmCalling: false
-}
-    // --- FUNCIONES DE CONFIGURACIÓN REQUERIDAS POR CISCO ---
-async function getWebexConfig(userType) {
-    return {
-        fedramp: false,
-        logger: { level: 'error' },
-        meetings: { reconnection: { enabled: true } }
-    };
-}
-
-async function getCallingConfig() {
-    return {
-        isB2B: false,
-        isWebexCalling: true,
-        isUcmCalling: false
-    };
-
 };
