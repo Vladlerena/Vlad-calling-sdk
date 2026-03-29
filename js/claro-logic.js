@@ -1,50 +1,51 @@
 // js/claro-logic.js
-// Lógica limpia para Webex Calling sin errores de viajes
 
-const CLIENT_ID = 'C6b8299f6b12f82cec3482504e820982d6f501b66a0290d70868b782f942368c2';
-const REDIRECT_URI = 'https://vladlerena.github.io/Vlad-calling-sdk/';
+// 1. PEGA AQUÍ TU ACCESS TOKEN DE LA SERVICE APP
+const SERVICE_APP_TOKEN = 'TU_ACCESS_TOKEN_AQUI'; 
 
 document.addEventListener('DOMContentLoaded', async () => {
-    const loginBtn = document.getElementById('login-button');
-    const statusText = document.getElementById('status-text');
+    const statusText = document.getElementById('registration-status-text');
     const callBtn = document.getElementById('make-call-btn');
+    const loginBtn = document.getElementById('login-button');
+    const myTripsBtn = document.getElementById('my-trips-button');
 
-    // 1. Configurar Link de Login
-    if (loginBtn) {
-        const authUrl = `https://webexapis.com/v1/authorize?client_id=${CLIENT_ID}&response_type=token&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=spark%3Akms%20spark%3Apeople_read%20spark%3Awebrtc_calling%20spark%3Acalls_read%20spark%3Acalls_write`;
-        loginBtn.setAttribute('href', authUrl);
+    // Lógica para el INDEX: Si estamos en la raíz, saltamos directo a MyTrips
+    if (window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/')) {
+        if (myTripsBtn) {
+            myTripsBtn.style.display = 'inline-block';
+            // Opcional: Redirigir automáticamente si quieres que el index ni se vea
+            // window.location.href = 'mytrips.html';
+        }
+        if (loginBtn) loginBtn.style.display = 'none'; // Ocultamos el login ya que usamos Service App
     }
 
-    // 2. Lógica de Inicialización (Si ya tenemos el token)
-    const urlParams = new URLSearchParams(window.location.hash.replace('#', '?'));
-    const token = urlParams.get('access_token') || sessionStorage.getItem('webex_token');
-
-    if (token) {
-        sessionStorage.setItem('webex_token', token);
-        if (statusText) statusText.innerText = "Registrando línea...";
-        
+    // Lógica para MYTRIPS: Inicialización automática con el Token Fijo
+    if (SERVICE_APP_TOKEN && SERVICE_APP_TOKEN !== 'TU_ACCESS_TOKEN_AQUI') {
         try {
-            // Inicializamos el SDK directamente
-            await callingSDK.initialize(token);
+            if (statusText) statusText.innerText = "Iniciando servicio de red...";
             
+            // Inicializamos el motor de voz con el token de la Service App
+            await callingSDK.initialize(SERVICE_APP_TOKEN);
+            
+            console.log("Service App conectada exitosamente");
             if (statusText) statusText.innerText = "Línea Habilitada (6100)";
             if (callBtn) callBtn.disabled = false;
-            
-            // Si estamos en index, redirigir a mytrips
-            if (window.location.pathname.includes('index.html') || window.location.pathname === '/') {
-                window.location.href = 'mytrips.html';
-            }
+
         } catch (e) {
-            console.error("Error SDK:", e);
-            if (statusText) statusText.innerText = "Error de registro";
+            console.error("Error de Service App:", e);
+            if (statusText) statusText.innerText = "Error: Token inválido o expirado";
         }
+    } else {
+        if (statusText) statusText.innerText = "Falta configurar el Token de Service App";
     }
 });
 
+// Función para el botón de llamar
 async function handleCall() {
     try {
+        // El SDK usará la identidad de la Service App para marcar
         await callingSDK.makeCall('6100');
     } catch (e) {
-        alert("Error al llamar: " + e.message);
+        alert("Error en la llamada de Service App: " + e.message);
     }
 }
