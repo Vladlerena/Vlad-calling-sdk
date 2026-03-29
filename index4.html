@@ -21,57 +21,51 @@
 </div>
 
 <script>
-    let webex;
-    let activeCall;
+async function handleAction() {
+    const token = document.getElementById('tokenInput').value.trim();
+    const status = document.getElementById('status');
 
-    async function handleAction() {
-        const token = document.getElementById('tokenInput').value.trim();
-        const status = document.getElementById('status');
+    try {
+        status.innerText = "Inicializando SDK...";
 
-        try {
-            status.innerText = "Inicializando SDK...";
-
-            // CONFIGURACIÓN EXACTA DEL SDK OFICIAL
-            webex = Webex.init({
-                credentials: { access_token: token },
-                config: {
-                    // El secreto del Fork: habilitar explícitamente estos submódulos
-                    services: {
-                        discovery: { enabled: true }
-                    },
-                    device: {
-                        preDiscovery: true 
-                    },
-                    phone: {
-                        enablePhoneService: true,
-                        enableWebRTC: true,
-                        calling: { enabled: true }
+        webex = Webex.init({
+            credentials: { access_token: token },
+            config: {
+                // Eliminamos 'preDiscovery: true' que causaba el error de string
+                services: {
+                    discovery: {
+                        allowedDomains: ['https://vladlerena.github.io'] 
+                    }
+                },
+                phone: {
+                    enablePhoneService: true,
+                    enableWebRTC: true,
+                    calling: { 
+                        enabled: true 
                     }
                 }
-            });
+            }
+        });
 
-            // PASO 1: Registro de dispositivo (WDM)
-            status.innerText = "Registrando dispositivo (WDM)...";
-            await webex.internal.device.register();
+        status.innerText = "Registrando dispositivo...";
+        // Importante: No llamamos a device.register() inmediatamente. 
+        // Dejamos que el SDK lo maneje internamente al intentar registrar el phone.
+        
+        await webex.phone.register();
 
-            // PASO 2: Esperar a que los servicios de voz estén listos
-            status.innerText = "Sincronizando línea de voz...";
-            await webex.phone.register();
+        status.innerText = "Marcando al 6100...";
+        activeCall = await webex.phone.dial('6100');
 
-            // PASO 3: Marcación asíncrona
-            status.innerText = "Marcando al 6100...";
-            activeCall = await webex.phone.dial('6100');
+        activeCall.on('connected', () => {
+            status.innerText = "🟢 EN LLAMADA AL 6100";
+            document.getElementById('btnCall').innerText = "COLGAR";
+        });
 
-            activeCall.on('connected', () => {
-                status.innerText = "🟢 EN LLAMADA AL 6100";
-            });
-
-        } catch (error) {
-            console.error("Error capturado:", error);
-            // Si te da el 403 aquí, mira la consola para ver el "Tracking ID"
-            status.innerText = "Error: " + error.message;
-        }
+    } catch (error) {
+        console.error("Error capturado:", error);
+        status.innerText = "Error: " + error.message;
     }
+}
 </script>
 </body>
 </html>
