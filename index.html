@@ -1,156 +1,130 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acceso Corporativo - Claro Chile</title>
-    
-    <script src="webex.min.js"></script>
-    
-    <style>
-        :root {
-            --claro-red: #ef3829;
-            --claro-dark: #212529;
-            --claro-gray: #f4f7f9;
-        }
+<title>Claro Chile - Acceso Corporativo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 
-        body {
-            font-family: 'Segoe UI', Roboto, sans-serif;
-            background-color: var(--claro-gray);
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+<link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+<link rel="stylesheet" href="css/style.css" type="text/css" media="all" />
+<link href="css/font-awesome.css" rel="stylesheet"> 
+<link href='//fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
 
-        .login-card {
-            background: white;
-            width: 100%;
-            max-width: 400px;
-            padding: 50px 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-            text-align: center;
-        }
+<style>
+	/* Sobreescritura para Look & Feel Claro Dark */
+	body { background: #121212; color: #fff; font-family: 'Oswald', sans-serif; }
+	.banner { background: #1e1e1e; padding-bottom: 20px; border-bottom: 3px solid #ef3829; }
+	.top-banner { background: #000; border-bottom: 1px solid #333; }
+	.header { background: transparent; padding: 2em 0; }
+	
+	.logo h1 a { color: #fff !important; text-transform: uppercase; font-weight: 700; }
+	.logo h1 a span { color: #ef3829; } /* Punto o detalle en rojo */
 
-        .logo-claro {
-            width: 140px;
-            margin-bottom: 30px;
-        }
+	.claro-container {
+		max-width: 500px;
+		margin: 80px auto;
+		background: #1e1e1e;
+		padding: 40px;
+		border-radius: 15px;
+		text-align: center;
+		box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+	}
 
-        h1 {
-            color: var(--claro-dark);
-            font-size: 22px;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
+	.claro-red-btn {
+		background: #ef3829;
+		color: #fff;
+		padding: 15px 30px;
+		border-radius: 8px;
+		text-transform: uppercase;
+		font-weight: bold;
+		display: inline-block;
+		margin-top: 20px;
+		border: none;
+		transition: 0.3s;
+		width: 100%;
+		font-size: 1.2em;
+	}
+	.claro-red-btn:hover { background: #d63022; color: #fff; transform: translateY(-2px); }
+	
+	.claro-outline-btn {
+		background: transparent;
+		color: #fff;
+		border: 2px solid #444;
+		padding: 15px 30px;
+		border-radius: 8px;
+		display: inline-block;
+		margin-top: 15px;
+		width: 100%;
+		transition: 0.3s;
+	}
+	.claro-outline-btn:hover { border-color: #ef3829; color: #ef3829; }
 
-        p {
-            color: #6c757d;
-            font-size: 14px;
-            margin-bottom: 35px;
-            line-height: 1.5;
-        }
+	/* Ocultar elementos de viajes originales */
+	#kb, .about { display: none; }
 
-        .btn-login {
-            width: 100%;
-            padding: 16px;
-            background-color: var(--claro-red);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            text-decoration: none;
-            display: inline-block;
-            box-sizing: border-box;
-        }
-
-        .btn-login:hover {
-            background-color: #d63022;
-            box-shadow: 0 5px 15px rgba(239, 56, 41, 0.3);
-        }
-
-        .status-msg {
-            margin-top: 20px;
-            font-size: 13px;
-            color: #28a745;
-            display: none; /* Se activa al loguear */
-        }
-
-        .footer {
-            margin-top: 40px;
-            font-size: 11px;
-            color: #adb5bd;
-            letter-spacing: 0.5px;
-        }
-
-        /* Estilo para el indicador de carga */
-        .loader {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid var(--claro-red);
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            animation: spin 1s linear infinite;
-            display: none;
-            margin: 10px auto;
-        }
-
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    </style>
+	.avatar-info { margin-bottom: 20px; padding: 15px; background: #2a2a2a; border-radius: 10px; }
+</style>
 </head>
 <body>
+	<div class="banner">
+		<div class="top-banner">
+			<div class="container">
+				<div class="top-banner-left">
+					<ul>
+						<li><a href="#"><i class="fa fa-phone"></i> Soporte Claro</a></li>
+					</ul>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+		
+		<div class="header">
+			<div class="container">
+				<div class="logo">
+					<h1><a href="index.html">CLARO <span>CHILE</span></a></h1>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+	</div>
 
-    <div class="login-card">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/Logo_Claro.svg" class="logo-claro" alt="Claro Chile">
-        
-        <h1>Portal de Soporte</h1>
-        <p>Para habilitar las funciones de llamada, por favor inicia sesión con tu cuenta de Webex.</p>
+	<div class="container">
+		<div class="claro-container">
+			<h2 style="margin-bottom: 10px;">Portal C2C</h2>
+			<p style="color: #888; margin-bottom: 30px;">Inicia sesión para habilitar Customer Assist</p>
 
-        <a id="loginLink" href="#" class="btn-login" onclick="showLoader()">
-            Iniciar Sesión con Webex
-        </a>
+			<div id="user-info" class="top-banner-right" style="float: none; display:none; margin-bottom: 20px;">
+				<div class="avatar-info">
+					<img src="images/harvey_avatar.jpeg" alt="Avatar" class="avatar" style="width: 50px; border-radius: 50%;">
+					<span class="avatar-name" id="user-name" style="display: block; margin-top: 10px; font-size: 1.2em;">Cargando...</span>
+				</div>
+			</div>
 
-        <div id="loader" class="loader"></div>
-        <div id="successMsg" class="status-msg">✅ Autenticación exitosa. Redirigiendo...</div>
+			<a id="login-button" class="claro-red-btn">INICIAR SESIÓN WEBEX</a>
 
-        <div class="footer">
-            SISTEMA DE ASISTENCIA CLARO CHILE
-        </div>
-    </div>
+			<a id="my-trips-button" href="mytrips.html" class="claro-outline-btn" style="display:none;">CUSTOMER ASSIST</a>
 
-    <script src="js/app.js"></script>
+			<a id="logout-button" class="claro-outline-btn" style="display:none; border-color: #666; color: #666;">Cerrar Sesión</a>
+		</div>
+	</div>
 
-    <script>
-        // CONFIGURACIÓN: Aquí pon tu URL de autorización (la que termina en response_type=token)
-        const CLIENT_ID = 'C6b8299f6b12f82cec3482504e820982d6f501b66a0290d70868b782f942368c2';
-        const REDIRECT_URI = 'https://vladlerena.github.io/Vlad-calling-sdk/';
-        
-        const authUrl = `https://webexapis.com/v1/authorize?client_id=${CLIENT_ID}&response_type=token&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=spark%3Akms%20spark%3Apeople_read%20spark%3Awebrtc_calling%20spark%3Acalls_read%20spark%3Acalls_write&state=set_state_here`;
-        
-        document.getElementById('loginLink').href = authUrl;
+	<script src="js/jquery-1.11.1.min.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/SmoothScroll.min.js"></script>
+	<script src="https://unpkg.com/webex/umd/webex.min.js"></script>
+	<script src='https://unpkg.com/webex@3.5.0-next.25/umd/calling.min.js'></script>
+	<script type="text/javascript" src="./js/timer.js"></script>
+	<script type="text/javascript" src="./js/app.js"></script>
+	<script type="text/javascript" src="./sdk/calling-sdk.js"></script>
 
-        function showLoader() {
-            document.getElementById('loader').style.display = 'block';
-            document.getElementById('loginLink').innerText = 'Conectando...';
-        }
-
-        // Lógica para detectar si ya volvimos del Login con el Token
-        window.onload = () => {
-            if (window.location.hash.includes('access_token')) {
-                document.getElementById('successMsg').style.display = 'block';
-                document.getElementById('loginLink').style.display = 'none';
-                
-                // Redirigimos automáticamente a tu nueva página de Customer Assist
-                setTimeout(() => {
-                    window.location.href = 'mytrips.html';
-                }, 2000);
-            }
-        };
-    </script>
-</body>
+	<script>
+		// Forzamos el cambio de texto de los botones si app.js los sobreescribe
+		window.addEventListener('load', function() {
+			const tripsBtn = document.getElementById('my-trips-button');
+			if(tripsBtn) tripsBtn.innerHTML = '<i class="fa fa-headset"></i> CUSTOMER ASSIST';
+		});
+	</script>
+</body>	
 </html>
