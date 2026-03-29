@@ -7,21 +7,18 @@
     <style>
         body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #f4f7f9; margin: 0; }
         .container { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); text-align: center; width: 320px; }
-        #status { margin: 20px 0; font-size: 14px; color: #555; min-height: 40px; line-height: 1.4; }
+        #status { margin: 20px 0; font-size: 14px; color: #555; min-height: 40px; line-height: 1.4; border-bottom: 1px solid #eee; padding-bottom: 10px; }
         .btn-call { width: 100%; padding: 15px; background: #007aa5; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px; }
-        .btn-call:disabled { background: #ccc; }
         input { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>Llamar al 6100</h2>
-    <div id="status">Ingresa el Token para empezar</div>
-    
-    <input type="password" id="tokenInput" placeholder="Access Token de Service App">
-    
-    <button id="btnCall" onclick="iniciar()" class="btn-call">LLAMAR AHORA</button>
+    <h2>Anexo 6100</h2>
+    <div id="status">Pega el Token para iniciar</div>
+    <input type="password" id="tokenInput" placeholder="Access Token">
+    <button id="btnCall" onclick="iniciar()" class="btn-call">LLAMAR AL 6100</button>
 </div>
 
 <script>
@@ -34,63 +31,60 @@
         const btn = document.getElementById('btnCall');
 
         if (activeCall) {
-            status.innerText = "Terminando llamada...";
-            await activeCall.hangup();
+            activeCall.hangup();
             return;
         }
 
         try {
             btn.disabled = true;
-            status.innerText = "Conectando con Webex...";
+            status.innerText = "1/4: Inicializando...";
 
-            // 1. Inicialización idéntica a la lógica interna del Calling SDK de Cisco
+            // FORMA CORRECTA DE INICIALIZAR (Evita el error de undefined)
             webex = Webex.init({
-                credentials: { access_token: token }
+                credentials: { access_token: token },
+                config: {
+                    phone: {
+                        enablePhoneService: true,
+                        enableWebRTC: true,
+                        calling: { enabled: true }
+                    }
+                }
             });
 
-            // Forzamos la configuración que el fork hace en el fondo
-            webex.config.phone.enablePhoneService = true;
-            webex.config.phone.enableWebRTC = true;
+            // TRUCO PARA EL MICRÓFONO:
+            // Pedimos permiso manualmente antes de que el SDK falle por falta de hardware
+            status.innerText = "2/4: Solicitando Micrófono...";
+            try {
+                await navigator.mediaDevices.getUserMedia({ audio: true });
+                console.log("Micrófono autorizado por el usuario");
+            } catch (micErr) {
+                throw new Error("No se puede llamar sin permiso de micrófono.");
+            }
 
-            // 2. Registro del dispositivo (WDM)
-            status.innerText = "Registrando dispositivo...";
+            status.innerText = "3/4: Registrando en Cisco (WDM)...";
             await webex.internal.device.register();
-
-            // 3. Registro de voz (Aquí es donde el fork suele tardar un poco)
-            status.innerText = "Sincronizando línea de voz...";
+            
+            status.innerText = "4/4: Sincronizando línea...";
             await webex.phone.register();
 
-            // 4. Marcación directa
             status.innerText = "Marcando al 6100...";
-            
-            // Usamos la estructura de la demo: .dial devuelve una promesa con la llamada
-            webex.phone.dial('6100').then((call) => {
-                activeCall = call;
+            activeCall = await webex.phone.dial('6100');
 
-                activeCall.on('connected', () => {
-                    status.innerText = "🟢 EN LLAMADA CON 6100";
-                    btn.innerText = "COLGAR";
-                    btn.style.background = "#d93025";
-                    btn.disabled = false;
-                });
-
-                activeCall.on('disconnected', () => {
-                    status.innerText = "Llamada finalizada";
-                    resetUI();
-                });
-
-                activeCall.on('error', (err) => {
-                    status.innerText = "Error: " + err.message;
-                    resetUI();
-                });
-            }).catch((err) => {
-                status.innerText = "Fallo al marcar: " + err.message;
+            activeCall.on('connected', () => {
+                status.innerText = "🟢 EN LLAMADA";
+                btn.innerText = "COLGAR";
+                btn.style.background = "#d93025";
                 btn.disabled = false;
             });
 
+            activeCall.on('disconnected', () => {
+                status.innerText = "Llamada finalizada";
+                resetUI();
+            });
+
         } catch (error) {
-            console.error(error);
-            status.innerText = "Fallo: " + error.message;
+            console.error("Error completo:", error);
+            status.innerText = "❌ Fallo: " + error.message;
             btn.disabled = false;
         }
     }
@@ -98,11 +92,10 @@
     function resetUI() {
         const btn = document.getElementById('btnCall');
         activeCall = null;
-        btn.innerText = "LLAMAR AHORA";
+        btn.innerText = "LLAMAR AL 6100";
         btn.style.background = "#007aa5";
         btn.disabled = false;
     }
 </script>
-
 </body>
 </html>
