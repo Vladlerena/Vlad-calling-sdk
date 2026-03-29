@@ -264,4 +264,19 @@ window.callingSDK = {
         if (call) call.end();
         if (incomingCall) incomingCall.end();
     }
+    // --- FUNCIONES DE CONFIGURACIÓN PARA CLARO ---
+async function getWebexConfig(userType) {
+    return {
+        fedramp: false,
+        logger: { level: 'error' },
+        meetings: { reconnection: { enabled: true } }
+    };
+}
+
+async function getCallingConfig() {
+    return {
+        isB2B: false,
+        isWebexCalling: true,
+        isUcmCalling: false
+}
 };
