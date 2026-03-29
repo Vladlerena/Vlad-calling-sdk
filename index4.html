@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Webex C2C - 6100</title>
+    <script src="webex.min.js"></script>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #f4f7f9; }
+        .card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); text-align: center; width: 350px; }
+        #status { background: #eee; padding: 10px; margin: 15px 0; border-radius: 5px; font-size: 13px; min-height: 40px; }
+        .btn-call { width: 100%; padding: 15px; background: #3278a0; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Anexo 6100</h2>
+    <div id="status">Listo para llamar</div>
+    <input type="password" id="tokenInput" placeholder="Pega el Token de la Service App" style="width:100%; padding:10px; margin-bottom:10px; box-sizing:border-box;">
+    <button id="btnCall" onclick="handleAction()" class="btn-call">LLAMAR AL 6100</button>
+</div>
+
+<script>
+    let webex;
+    let activeCall;
+
+    async function handleAction() {
+        const token = document.getElementById('tokenInput').value.trim();
+        const status = document.getElementById('status');
+
+        try {
+            status.innerText = "Inicializando SDK...";
+
+            // CONFIGURACIÓN EXACTA DEL SDK OFICIAL
+            webex = Webex.init({
+                credentials: { access_token: token },
+                config: {
+                    // El secreto del Fork: habilitar explícitamente estos submódulos
+                    services: {
+                        discovery: { enabled: true }
+                    },
+                    device: {
+                        preDiscovery: true 
+                    },
+                    phone: {
+                        enablePhoneService: true,
+                        enableWebRTC: true,
+                        calling: { enabled: true }
+                    }
+                }
+            });
+
+            // PASO 1: Registro de dispositivo (WDM)
+            status.innerText = "Registrando dispositivo (WDM)...";
+            await webex.internal.device.register();
+
+            // PASO 2: Esperar a que los servicios de voz estén listos
+            status.innerText = "Sincronizando línea de voz...";
+            await webex.phone.register();
+
+            // PASO 3: Marcación asíncrona
+            status.innerText = "Marcando al 6100...";
+            activeCall = await webex.phone.dial('6100');
+
+            activeCall.on('connected', () => {
+                status.innerText = "🟢 EN LLAMADA AL 6100";
+            });
+
+        } catch (error) {
+            console.error("Error capturado:", error);
+            // Si te da el 403 aquí, mira la consola para ver el "Tracking ID"
+            status.innerText = "Error: " + error.message;
+        }
+    }
+</script>
+</body>
+</html>
