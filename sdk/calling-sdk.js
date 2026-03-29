@@ -234,3 +234,34 @@ function toggleMute() {
     incomingCall.mute(localAudioStream);
     callNotification.muteToggle();
 }
+// --- PUENTE DE COMPATIBILIDAD PARA CLARO ---
+window.callingSDK = {
+    get isRegistered() {
+        return !!line && line.state === 'REGISTERED';
+    },
+    initialize: async function(token) {
+        console.log("Iniciando motor de voz con token...");
+        // Guardamos el token en el lugar donde el SDK de Cisco lo busca
+        sessionStorage.setItem('webex_token', token);
+        
+        // Llamamos a la función original del SDK
+        // Usamos 'customer' como tipo por defecto
+        await initCalling('customer'); 
+        
+        return new Promise((resolve) => {
+            const check = setInterval(() => {
+                if (line && line.state === 'REGISTERED') {
+                    clearInterval(check);
+                    resolve(true);
+                }
+            }, 1000);
+        });
+    },
+    makeCall: function(number) {
+        return initiateCall(number);
+    },
+    hangup: function() {
+        if (call) call.end();
+        if (incomingCall) incomingCall.end();
+    }
+};
