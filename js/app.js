@@ -11,7 +11,7 @@ const secondCallTimer = document.querySelector('#secondCallNotification #call-ti
 const profileDropDown = document.getElementById("myDropdown");
 const profileOnline = document.querySelector(".dropbtn #availability");
 
-let service_app_token = ''; // Add the service app account token here
+let service_app_token = 'M2RlYTE0M2EtYjE1MS00YjUyLWJhMDMtZjY1ZjEyYzA0MzdlZDkxNzkxYTgtYTQ1_P0A1_cbbe27d4-1f60-43cb-819b-fd3749c66621'; // Add the service app account token here
 // const refresh_token = '';
 
 class callNotificationElement {
