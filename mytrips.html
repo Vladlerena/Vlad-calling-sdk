@@ -145,22 +145,27 @@
 			document.getElementById('active-call-timer').style.display = 'none';
 		});
 	</script>
-<div style="display: none !important; visibility: hidden; opacity: 0;">
-    <nav class="navbar-default">
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <li><a id="home-link" href="index.html">Home</a></li>
-                <li><a id="my-trips-link" href="mytrips.html">My Trips</a></li>
-                <li><a id="flights-link" href="flights.html">Flights</a></li>
-                <li><a id="hotels-link" href="hotels.html">Hotels</a></li>
-                <li><a id="holiday-link">Holidays</a></li>
-                <li><a id="cabs-link">Cabs</a></li>
-            </ul>
-        </div>
-    </nav>
-    <div id="myDropdown"></div>
-    <button class="dropbtn"></button>
-    <span class="avatar-name"></span>
+<div style="display: none !important; visibility: hidden; opacity: 0; position: absolute; top: -1000px;">
+    <div class="top-nav">
+        <nav class="navbar navbar-default">
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a id="home-link" href="index.html">Home</a></li>
+                    <li><a id="my-trips-link" href="mytrips.html">My Trips</a></li>
+                    <li><a id="flights-link" href="#">Flights</a></li>
+                    <li><a id="hotels-link" href="#">Hotels</a></li>
+                    <li><a id="holiday-link" href="#">Holidays</a></li>
+                    <li><a id="cabs-link" href="#">Cabs</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="top-banner-right">
+        <button class="dropbtn"></button>
+        <div id="myDropdown"></div>
+        <span class="avatar-name">Admin</span>
+        <img class="avatar" src="">
+    </div>
 </div>
 
 <link rel="icon" href="data:,">
