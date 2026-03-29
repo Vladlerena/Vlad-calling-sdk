@@ -279,4 +279,20 @@ async function getCallingConfig() {
         isWebexCalling: true,
         isUcmCalling: false
 }
+    // --- FUNCIONES DE CONFIGURACIÓN REQUERIDAS POR CISCO ---
+async function getWebexConfig(userType) {
+    return {
+        fedramp: false,
+        logger: { level: 'error' },
+        meetings: { reconnection: { enabled: true } }
+    };
+}
+
+async function getCallingConfig() {
+    return {
+        isB2B: false,
+        isWebexCalling: true,
+        isUcmCalling: false
+    };
+
 };
