@@ -1,0 +1,471 @@
+<!--
+  index.html — "Unidos por la Colaboración"
+  Estructura basada en mytrips.html (WebexSamples/webex-js-sdk-calling-demo)
+  Mismo stack: Webex Calling SDK, app.js, calling-sdk.js, timer.js
+-->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <title>Unidos por la Colaboración</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+  <!-- Bootstrap -->
+  <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+  <!-- Estilos del proyecto -->
+  <link rel="stylesheet" href="css/style.css" type="text/css" media="all" />
+  <!-- Font Awesome -->
+  <link href="css/font-awesome.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+  <!-- Fuentes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <script src="js/jquery-1.11.1.min.js"></script>
+  <script src="js/bootstrap.js"></script>
+  <script src="js/SmoothScroll.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #f4f6fb;
+    }
+
+    /* ── Banner ── */
+    .banner.collab-bg {
+      background: linear-gradient(135deg, #00308f 0%, #0050c8 60%, #0073e6 100%);
+      min-height: 220px;
+    }
+
+    .top-banner {
+      background: rgba(0,0,0,0.18);
+      padding: 10px 0;
+    }
+
+    .top-banner-left ul {
+      list-style: none;
+      margin: 0; padding: 0;
+      display: flex; gap: 24px;
+    }
+
+    .top-banner-left ul li a {
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      font-size: 13px;
+      display: flex; align-items: center; gap: 6px;
+      transition: color .2s;
+    }
+    .top-banner-left ul li a:hover { color: #fff; }
+
+    .top-banner-right { float: right; position: relative; }
+
+    .dropbtn {
+      background: transparent; border: none;
+      color: #fff; cursor: pointer;
+      display: flex; align-items: center; gap: 8px;
+      font-family: 'Poppins', sans-serif; font-size: 14px;
+    }
+
+    .avatar-placeholder {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: rgba(255,255,255,0.25);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 600; font-size: 14px; color: #fff;
+      border: 2px solid rgba(255,255,255,0.5);
+    }
+
+    .avatar-name { color: #fff; font-weight: 500; }
+    #availability { color: #4cef7a; font-size: 10px; }
+
+    .dropdown-content {
+      display: none; position: absolute;
+      right: 0; top: 42px;
+      background: #fff; border-radius: 8px;
+      box-shadow: 0 8px 24px rgba(0,40,160,0.15);
+      min-width: 160px; z-index: 999; overflow: hidden;
+    }
+    .dropdown-content a {
+      display: flex; align-items: center; gap: 10px;
+      padding: 11px 18px; color: #333;
+      text-decoration: none; font-size: 13px;
+      transition: background .15s;
+    }
+    .dropdown-content a:hover { background: #f0f4ff; }
+    .top-banner-right:hover .dropdown-content { display: block; }
+
+    /* ── Navbar ── */
+    .header { padding: 18px 0 0; }
+    .logo h1 a {
+      color: #fff; text-decoration: none;
+      font-size: 24px; font-weight: 700; letter-spacing: -0.5px;
+    }
+    .navbar { background: transparent; border: none; margin: 0; }
+    .navbar-default .navbar-nav > li > a {
+      color: rgba(255,255,255,0.82) !important;
+      font-size: 14px; font-weight: 500; padding: 8px 14px;
+      transition: color .2s;
+    }
+    .navbar-default .navbar-nav > li > a:hover,
+    .navbar-default .navbar-nav > li > a.active { color: #fff !important; }
+
+    /* ── Hero ── */
+    .collab-hero {
+      text-align: center;
+      padding: 30px 20px 40px;
+      color: #fff;
+    }
+    .collab-hero .badge-label {
+      display: inline-block;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: #fff; font-size: 11px; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      padding: 4px 14px; border-radius: 20px;
+      margin-bottom: 12px;
+    }
+    .collab-hero h2 {
+      font-size: clamp(1.6rem, 4vw, 2.6rem);
+      font-weight: 300; margin: 0 0 6px; line-height: 1.2;
+    }
+    .collab-hero h2 strong { font-weight: 700; }
+    .collab-hero p { font-size: 14px; opacity: 0.72; margin: 0; }
+
+    /* ── Stats ── */
+    .stats-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px; background: #eef0f6;
+      border-radius: 12px; overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .stat-item { background: #fff; text-align: center; padding: 20px 10px; }
+    .stat-number { font-size: 26px; font-weight: 700; color: #0050c8; line-height: 1; }
+    .stat-label { font-size: 11px; color: #888; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.06em; }
+
+    /* ── Tarjeta ── */
+    .collab-card {
+      background: #fff; border-radius: 16px;
+      box-shadow: 0 4px 32px rgba(0,40,160,0.10);
+      padding: 36px 40px 32px; margin-bottom: 28px;
+    }
+    .collab-card h3 { font-size: 20px; font-weight: 600; color: #111; margin: 0 0 6px; }
+    .collab-tagline { font-size: 13px; color: #888; margin-bottom: 24px; }
+
+    /* ── Botón Llamar (mismo patrón que call-support-btn de mytrips.html) ── */
+    .call-support-btn {
+      background: linear-gradient(135deg, #0050c8, #0073e6);
+      color: #fff; border: none; border-radius: 8px;
+      padding: 13px 28px; font-size: 14px; font-weight: 600;
+      font-family: 'Poppins', sans-serif; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 9px;
+      box-shadow: 0 4px 16px rgba(0,80,200,0.30);
+      transition: transform .15s, box-shadow .15s, opacity .15s;
+    }
+    .call-support-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 22px rgba(0,80,200,0.40);
+    }
+    .call-support-btn:active { transform: scale(0.97); opacity: .9; }
+
+    .separator {
+      border: none; border-top: 1px solid #eef0f6;
+      margin: 26px 0;
+    }
+
+    /* ── Team grid ── */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 16px; margin-top: 4px;
+    }
+    .team-card {
+      border: 1px solid #e8ecf5; border-radius: 10px;
+      padding: 20px 16px; text-align: center;
+      transition: box-shadow .2s, border-color .2s;
+    }
+    .team-card:hover {
+      box-shadow: 0 4px 18px rgba(0,80,200,0.10);
+      border-color: #b0c4f0;
+    }
+    .team-avatar {
+      width: 52px; height: 52px; border-radius: 50%;
+      background: linear-gradient(135deg, #0050c8, #00c6ff);
+      margin: 0 auto 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; font-weight: 700; color: #fff;
+    }
+    .team-name { font-size: 14px; font-weight: 600; color: #1a1a2e; margin-bottom: 2px; }
+    .team-role  { font-size: 12px; color: #888; margin-bottom: 12px; }
+    .team-call-btn {
+      background: transparent;
+      border: 1.5px solid #0050c8; color: #0050c8;
+      border-radius: 6px; padding: 6px 16px;
+      font-size: 12px; font-weight: 600;
+      font-family: 'Poppins', sans-serif; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 6px;
+      transition: background .2s, color .2s;
+    }
+    .team-call-btn:hover { background: #0050c8; color: #fff; }
+
+    /* ── Call Notification (idéntico a mytrips.html) ── */
+    .incoming-call-notification {
+      position: fixed; bottom: 28px; right: 28px;
+      background: #1a1a2e; border-radius: 16px;
+      padding: 16px 18px 12px; width: 300px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+      z-index: 9999; display: none; color: #fff;
+      animation: slideUp .3s ease;
+    }
+    .incoming-call-notification.timestate { display: block; }
+
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+
+    .notifier-a { display: flex; align-items: center; gap: 12px; }
+    .call-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: linear-gradient(135deg, #0050c8, #00c6ff);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 16px; flex-shrink: 0;
+    }
+    .callee-name { font-size: 14px; font-weight: 600; }
+
+    .call-time {
+      margin-left: auto; text-align: right;
+      font-size: 13px; color: rgba(255,255,255,0.75); min-width: 60px;
+    }
+    #hold-status { display: none; font-size: 11px; color: #ffbb33; font-weight: 600; }
+    .blink_me { animation: blinker 1.2s linear infinite; }
+    @keyframes blinker { 50% { opacity: 0; } }
+
+    .cut-call-btn {
+      background: #e53935; border: none; border-radius: 50%;
+      width: 34px; height: 34px; color: #fff; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; font-size: 13px; transition: background .2s;
+    }
+    .cut-call-btn:hover { background: #c62828; }
+
+    .notifier-a-controls {
+      margin-top: 12px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 10px;
+      display: flex; gap: 10px;
+    }
+    .hide-controls { display: none; }
+
+    .mute {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 8px; color: #fff;
+      padding: 7px 14px; font-size: 13px; cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      transition: background .2s;
+    }
+    .mute:hover { background: rgba(255,255,255,0.2); }
+
+    .tooltip-calling {
+      display: none; position: fixed;
+      background: #222; color: #fff;
+      padding: 4px 10px; border-radius: 6px;
+      font-size: 12px; z-index: 10000; pointer-events: none;
+    }
+
+    @media (max-width: 640px) {
+      .collab-card { padding: 22px 18px; }
+      .stats-strip { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── BANNER ── -->
+  <div class="banner collab-bg" id="body-header">
+
+    <div class="top-banner about-top-banner">
+      <div class="container">
+        <div class="top-banner-left">
+          <ul>
+            <li>
+              <a href="call_window.html">
+                <i class="fa fa-phone" aria-hidden="true" style="transform:rotateZ(90deg)"></i> Llámanos
+              </a>
+            </li>
+            <li>
+              <a href="mailto:soporte@unidosxcolaboracion.com">
+                <i class="fa fa-envelope" aria-hidden="true"></i> soporte@unidosxcolaboracion.com
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="top-banner-right">
+          <button class="dropbtn">
+            <div class="avatar-placeholder">U</div>
+            <span class="avatar-name">Usuario</span>
+            <i id="availability" class="fa fa-circle"></i>
+            <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-content" id="myDropdown">
+            <a href="mytrips.html"><i class="fa fa-plane-departure"></i> Mis Viajes</a>
+            <a href="#"><i class="fa fa-sign-out-alt"></i> Salir</a>
+          </div>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+
+    <div class="header">
+      <div class="container">
+        <div class="logo mytrips">
+          <h1><a href="index.html">Unidos &amp; Conectados</a></h1>
+        </div>
+        <div class="top-nav">
+          <nav class="navbar navbar-default">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse" data-target="#nav-main">Menú</button>
+            <div class="collapse navbar-collapse" id="nav-main">
+              <ul class="nav navbar-nav">
+                <li><a class="active" href="index.html">Inicio</a></li>
+                <li><a href="mytrips.html">Mis Viajes</a></li>
+                <li><a href="flights.html">Vuelos</a></li>
+                <li><a href="hotels.html">Hoteles</a></li>
+                <li><a>Paquetes</a></li>
+              </ul>
+            </div>
+          </nav>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+
+    <!-- Hero -->
+    <div class="collab-hero">
+      <div class="badge-label">Webex Calling SDK</div>
+      <h2>Bienvenidos a <strong>Unidos por la Colaboración</strong></h2>
+      <p>Conectamos personas, equipos y experiencias en tiempo real.</p>
+    </div>
+
+  </div>
+  <!-- ── //BANNER ── -->
+
+  <!-- ── CONTENIDO ── -->
+  <div id="body" class="blog">
+    <div class="container" style="margin-top:28px;">
+      <div class="col-md-offset-1 col-md-10">
+
+        <!-- Stats strip -->
+        <div class="stats-strip">
+          <div class="stat-item">
+            <div class="stat-number">2.4K</div>
+            <div class="stat-label">Colaboradores</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">98%</div>
+            <div class="stat-label">Disponibilidad</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">24/7</div>
+            <div class="stat-label">Soporte activo</div>
+          </div>
+        </div>
+
+        <!-- Tarjeta con botón de Webex Calling -->
+        <div class="collab-card">
+          <h3>Centro de Colaboración</h3>
+          <p class="collab-tagline">¿Necesitas ayuda? Conecta directamente con nuestro equipo de soporte ahora mismo.</p>
+
+          <!-- ★ BOTÓN WEBEX CALLING — mismo patrón que mytrips.html ★ -->
+          <button class="call-support-btn" onclick="initiateCall()">
+            <i class="fa fa-phone" aria-hidden="true" style="transform:rotateZ(103deg)"></i>
+            Llamar a Soporte
+          </button>
+
+          <div class="separator"></div>
+
+          <h4 style="font-size:15px;font-weight:600;color:#333;margin:0 0 16px;">Equipo disponible</h4>
+          <div class="team-grid">
+
+            <div class="team-card">
+              <div class="team-avatar">A</div>
+              <div class="team-name">Ana López</div>
+              <div class="team-role">Soporte Técnico</div>
+              <button class="team-call-btn" onclick="initiateCall()">
+                <i class="fa fa-phone" style="transform:rotateZ(103deg)"></i> Llamar
+              </button>
+            </div>
+
+            <div class="team-card">
+              <div class="team-avatar" style="background:linear-gradient(135deg,#6a11cb,#2575fc)">C</div>
+              <div class="team-name">Carlos Vega</div>
+              <div class="team-role">Gestión de Cuentas</div>
+              <button class="team-call-btn" onclick="initiateCall()">
+                <i class="fa fa-phone" style="transform:rotateZ(103deg)"></i> Llamar
+              </button>
+            </div>
+
+            <div class="team-card">
+              <div class="team-avatar" style="background:linear-gradient(135deg,#11998e,#38ef7d)">M</div>
+              <div class="team-name">María Torres</div>
+              <div class="team-role">Atención al Cliente</div>
+              <button class="team-call-btn" onclick="initiateCall()">
+                <i class="fa fa-phone" style="transform:rotateZ(103deg)"></i> Llamar
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="clearfix"></div>
+      </div>
+    </div>
+  </div>
+  <!-- ── //CONTENIDO ── -->
+
+  <!-- ── CALL NOTIFICATION (idéntico a mytrips.html) ── -->
+  <div class="incoming-call-notification timestate" id="callNotification">
+    <div class="notifier-a">
+      <div class="call-avatar">C</div>
+      <div class="call-info">
+        <div class="callee-name">Soporte al Cliente</div>
+      </div>
+      <div class="call-time" id="call-time">
+        <span id="timer">00:01</span>
+        <span class="blink_me" id="hold-status">En Espera</span>
+      </div>
+      <div class="call-actions">
+        <button class="cut-call-btn" onclick="disconnectCall()">
+          <i class="fa fa-times"></i>
+        </button>
+      </div>
+    </div>
+    <div class="notifier-a-controls hide-controls" id="notifier-a-controls">
+      <button class="mute tooltip-trigger" data-tooltip="Silenciar" onclick="toggleMute()">
+        <i class="fa fa-microphone-slash"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Audio remoto requerido por el SDK -->
+  <audio id="customer-remote-audio" autoplay></audio>
+
+  <div class="tooltip-calling">Tooltip Text</div>
+
+  <!-- ── SCRIPTS — mismo orden exacto que mytrips.html ── -->
+  <script src="https://unpkg.com/webex/umd/webex.min.js"></script>
+  <script src="https://unpkg.com/webex@3.5.0-next.25/umd/calling.min.js"></script>
+  <script type="text/javascript" src="./js/timer.js"></script>
+  <script type="text/javascript" src="./js/app.js"></script>
+  <script type="text/javascript" src="./sdk/calling-sdk.js"></script>
+  <script type="text/javascript">
+    window.onload = () => {
+      // Mismo rol 'customer' que mytrips.html
+      initCalling('customer');
+    }
+  </script>
+
+</body>
+</html>
